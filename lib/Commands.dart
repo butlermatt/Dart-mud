@@ -43,7 +43,7 @@ Logs you off and disconnects you from the MUD.''',
       (var usr, var args) {
       Room usrRoom = usr.currentRoom;
       usrRoom.removeObject(usr);
-      List<User> rmUsers = usrRoom.getUsers();
+      List rmUsers = usrRoom.getUsers();
       for(User tmp in rmUsers) {
         tmp.display('${usr.name} fades from existance.');
       }
@@ -190,7 +190,22 @@ Will display to others in the room: <yourname> jumps up and down.''',
       }
       })
     );
-  
+    
+    add(new Command('prompt', 
+      '''${Colors.LT_GREEN('Usage: prompt')} <prompt>
+Changes your prompt to the string you specify.
+In the future you can use the following extra parameters:
+  \$hp  -- Current HP
+  \$hpm -- Max HP
+  \$xp  -- Current XP
+  \$mp  -- Current MP
+  \$mpm -- Max MP''',
+      (User usr, String args) {
+        // We add an extra space to keep it pretty.
+        usr.promptStr = '$args ';
+        usr.display('Done');
+      })
+    );  
   
   } // End of _populateCommands
 } // End of CommandManager class

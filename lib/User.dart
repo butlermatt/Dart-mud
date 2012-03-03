@@ -41,10 +41,14 @@ class User extends ContainerImpl {
   
   void close() {
     _userData['longDesc'] = _longDescription;
+    _userData['prompt'] = _prompt;
     // TODO: Make sure to populate user info such as experience, health, etc
     
     Mudlib.saveUser(_userData);
     _conn.close();
   }
   
+  void set promptStr(String prmpt) {
+    if(prmpt != null || !prmpt.isEmpty()) _prompt = prmpt;
+  }
 }
