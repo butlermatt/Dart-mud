@@ -8,13 +8,21 @@ class EditorMode {
 class Editor {
   EditorMode _currentMode;
   String _prompt;
-  StringBuffer buff;
+  List<String> _fullBuff;
+  List<String> _tmpBuff;
+  int _buffLength;
+  int _tmpLength;
+  int _curLine;
   User usr;
   
   Editor(this.usr) {
     _currentMode = EditorMode.COMMAND;
     usr.updateHandler(_handleInput);
-    buff = new StringBuffer();
+    _fullBuff = new List<String>();
+    _tmpBuff = new List<String>();
+    _buffLength = 0;
+    _tmpLength = 0;
+    _curLine = 1;
   }
   
   void start() {    
@@ -43,14 +51,28 @@ class Editor {
         break;
       case 'i':
         _currentMode = EditorMode.INPUT;
+        if(_curLine > 0) _curLine -= 1;
         displayPrompt();
+        break;
+      case 'a':
+        _currentMode = EditorMode.INPUT;
+        if(_fullBuff.isEmpty()) _curLine = 0;
+        displayPrompt();
+        break;
+      case 'p':
+        _printLines(arg);
         break;
       }
     } else if(_currentMode == EditorMode.INPUT) {
       if(input == '.') {
         _currentMode = EditorMode.COMMAND;
+        
+        _fullBuff.insertRange(_curLine, _tmpBuff.length);
+        _fullBuff.setRange(_curLine, _tmpBuff.length, _tmpBuff);
+        _curLine += _tmpBuff.length;
+        _tmpBuff = new List<String>();
       } else {
-        buff.add('$input\n');
+        _tmpBuff.add('$input\n');
       }
       displayPrompt();
     }
@@ -67,6 +89,13 @@ class Editor {
     }
   }
   
+  void _printLines(String arg) {
+    if(arg === null || arg.isEmpty()) {
+      usr.write(_fullBuff[_curLine - 1]);
+    }
+    displayPrompt();
+  }
+  
   void _printHelp(String arg) {
     if(arg == null || arg.isEmpty()) {
       // TODO: Write full help information.
@@ -79,7 +108,10 @@ In command mode you may enter various commands to edit, modify and save the
 buffer. They are listed below:
 h <cmd>     Display this help. Optionally add <cmd> for more help about that
             command.
-i           Insert a line at the current position. Will put you into Input mode.
+i           Start editing on the line before the current line. Puts you into
+            EDIT mode.
+a           Start editing on the line after the current line. Puts you into
+            EDIT mode.
 q           Quit
 p <range>   Display the currently line, or optionally the line(s) found in the
             range specified.''';
@@ -89,6 +121,13 @@ p <range>   Display the currently line, or optionally the line(s) found in the
   }
   
   void _quitEdit() {
-    usr.doneEdit(buff.toString());
+    StringBuffer resBuff = new StringBuffer();
+    String res;
+    if(_fullBuff.length === 0 || _fullBuff.isEmpty()) {
+      res = '';
+    } else {
+      res = resBuff.addAll(_fullBuff).toString().trim();
+    }
+    usr.doneEdit(res);
   }
 }
