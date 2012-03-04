@@ -206,7 +206,17 @@ In the future you can use the following extra parameters:
         usr.promptStr = '$args ';
         usr.display('Done');
       })
-    );  
+    );
+    
+    add(new Command('ed', 
+      '''edit <file>
+Start the internal editor, modifying <file>.''',
+      (User usr, String args) {
+      // This is just a very basic tester at this point.
+      // TODO: Make it do something.
+      usr.startEdit((String str) => usr.display('You wrote:\n$str'));
+    })
+    );
   
   } // End of _populateCommands
 } // End of CommandManager class

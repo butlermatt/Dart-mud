@@ -13,6 +13,7 @@
 #source('Manager.dart');
 #source('./rooms/Matt.dart');
 #source('Colors.dart');
+#source('Editor.dart');
 
 
 class Mudlib {

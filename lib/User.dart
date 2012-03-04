@@ -6,6 +6,8 @@ class User extends ContainerImpl {
   String _prompt;
   Room currentRoom;
   Map _userData;
+  String _bufferData;
+  Function _editCallback;
   
   User(this._conn) {
     // Initialize connection stuff
@@ -30,6 +32,27 @@ class User extends ContainerImpl {
   }
   
   void writeLine(String str) { _conn.writeLine(str);  }
+  
+  void write(String str) { _conn.write(str); }
+  
+  void updateHandler(Function handler) {
+    _conn.lineHandler = handler;
+  }
+  
+  void startEdit(Function callback) {
+    _editCallback = callback;
+    _bufferData = null;
+    Editor edit = new Editor(this);
+    edit.start();
+  }
+  
+  void doneEdit(String info) {
+    _bufferData = info;
+    _conn.lineHandler = _handleInput;
+    _editCallback(info);
+  }
+  
+  String readLine() => _conn.readLine();
   
   void _handleInput() {
     String line = _conn.readLine();
