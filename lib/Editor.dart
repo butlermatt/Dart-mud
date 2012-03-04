@@ -41,9 +41,20 @@ class Editor {
       case 'q':
         _quitEdit();
         break;
+      case 'i':
+        _currentMode = EditorMode.INPUT;
+        displayPrompt();
+        break;
       }
+    } else if(_currentMode == EditorMode.INPUT) {
+      if(input == '.') {
+        _currentMode = EditorMode.COMMAND;
+      } else {
+        buff.add('$input\n');
+      }
+      displayPrompt();
     }
-  }
+  } // end Handle Input
   
   void displayPrompt() {
     switch(_currentMode) {
