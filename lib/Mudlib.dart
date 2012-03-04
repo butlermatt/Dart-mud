@@ -46,7 +46,7 @@ class Mudlib {
   }
   
   static void saveUser(Map usrData) {
-    String data = JSON.stringify(usrData);
+    String data = '${JSON.stringify(usrData)}\n';
     
     File usrFile = new File('users/${usrData['username']}.usr');
     RandomAccessFile file = usrFile.openSync(FileMode.WRITE);
