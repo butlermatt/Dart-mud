@@ -38,7 +38,7 @@ class CommandManager {
   void _populateCommands() {
     // Exit Command
     add(new Command('exit',
-      '''${Colors.LT_GREEN('Usage: exit')}
+      '''exit
 Logs you off and disconnects you from the MUD.''',
       (var usr, var args) {
       Room usrRoom = usr.currentRoom;
@@ -53,7 +53,7 @@ Logs you off and disconnects you from the MUD.''',
     
     // Shutdown command
     add(new Command('shutdown',
-      '''${Colors.LT_GREEN('Usage: shutdown')}
+      '''shutdown
 Notify and disconnect all users. Halt the MUD server.''',
       (var usr, var args) {
       CommandManager.mudlib.shutdown();
@@ -62,7 +62,7 @@ Notify and disconnect all users. Halt the MUD server.''',
     
     // Broadcast command
     add(new Command('broadcast',
-      '''${Colors.LT_GREEN('Usage: broadcast')} <text>
+      '''broadcast <text>
 Send a broadcast notification to all users currently logged on.''',
       (var usr, var args) {
       for(User tmp in User.mudlib.users) {
@@ -80,7 +80,7 @@ Send a broadcast notification to all users currently logged on.''',
     // Help command
     // TODO: Add more to this to get help on specific commands.
     add(new Command('help',
-      '''${Colors.LT_GREEN('Usage: help')} [<command>]
+      '''help [<command>]
 Without any arguments, help displays a list of available commands.
 With optional ${Colors.LT_WHITE('<command>')}, diplay the help information for the specified command.''',
       (User usr, String args) {
@@ -97,7 +97,8 @@ With optional ${Colors.LT_WHITE('<command>')}, diplay the help information for t
       } else {
         Command helpOn = Command.cmdDaemon[args];
         if(helpOn != null) {
-          usr.display(helpOn.help);
+          String helpMsg = '${Colors.LT_GREEN('Usage:')} ${helpOn.help}';
+          usr.display(helpMsg);
         } else {
           usr.display("I don't know anything about '$args'.");
         }
@@ -106,7 +107,7 @@ With optional ${Colors.LT_WHITE('<command>')}, diplay the help information for t
     );
     
     add(new Command('look',
-      '''${Colors.LT_GREEN('Usage: look')} [at <object>]
+      '''look [at <object>]
 Without any arguments, look will show you the current location you are standing
 in.
 You can also choose to look ${Colors.LT_WHITE('at <object>')}, to get more 
@@ -132,7 +133,7 @@ same location as you.''',
     );
     
     add(new Command('home',
-      '''${Colors.LT_GREEN('Usage: home')}
+      '''home
 Teleports the admin to thier home room.''',
       (User usr, String args) {
       if(!Mudlib.roomDaemon.moveUser(usr, '${usr.name}Home')) {
@@ -147,7 +148,7 @@ Teleports the admin to thier home room.''',
     );
     
     add(new Command('who',
-      '''${Colors.LT_GREEN('Usage: who')}
+      '''who
 Displays a list of users who are currently online.''',
       (User usr, String args) {
       List<User> users = CommandManager.mudlib.users;
@@ -161,7 +162,7 @@ Displays a list of users who are currently online.''',
     );
     
     add(new Command('say', 
-      '''${Colors.LT_GREEN('Usage: say')} <text>
+      '''say <text>
 Speak to the others in the current room.''',
       (User usr, String args) {
       List users = usr.currentRoom.getOtherUsers(usr);
@@ -173,7 +174,7 @@ Speak to the others in the current room.''',
     );
     
     add(new Command('emote', 
-      '''${Colors.LT_GREEN('Usage: emote')} <actions>
+      '''emote <actions>
 Displays to others in the room that you perform the ${Colors.LT_WHITE('actions')}.
 Eg: emote jumps up and down.
 Will display to others in the room: <yourname> jumps up and down.''',
@@ -192,7 +193,7 @@ Will display to others in the room: <yourname> jumps up and down.''',
     );
     
     add(new Command('prompt', 
-      '''${Colors.LT_GREEN('Usage: prompt')} <prompt>
+      '''prompt <prompt>
 Changes your prompt to the string you specify.
 In the future you can use the following extra parameters:
   \$hp  -- Current HP
