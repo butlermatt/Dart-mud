@@ -115,7 +115,7 @@ i           Start editing on the line before the current line. Puts you into
             EDIT mode.
 a           Start editing on the line after the current line. Puts you into
             EDIT mode.
-q           Quit
+q           Quit editor, returning anything currently in the buffer.
 p <range>   Display the currently line, or optionally the line(s) found in the
             range specified.
 d <range>   Deletes the current line, or optionally, the line(s) found in the
