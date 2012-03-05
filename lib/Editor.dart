@@ -62,6 +62,9 @@ class Editor {
       case 'p':
         _printLines(arg);
         break;
+      case 'd':
+        _deleteLines(arg);
+        break;
       }
     } else if(_currentMode == EditorMode.INPUT) {
       if(input == '.') {
@@ -91,7 +94,7 @@ class Editor {
   
   void _printLines(String arg) {
     if(arg === null || arg.isEmpty()) {
-      usr.write(_fullBuff[_curLine - 1]);
+      usr.write("${Colors.LT_WHITE('$_curLine :')} ${_fullBuff[_curLine - 1]}");
     }
     displayPrompt();
   }
@@ -114,10 +117,20 @@ a           Start editing on the line after the current line. Puts you into
             EDIT mode.
 q           Quit
 p <range>   Display the currently line, or optionally the line(s) found in the
+            range specified.
+d <range>   Deletes the current line, or optionally, the line(s) found in the
             range specified.''';
       usr.writeLine('\n$helpInfo');
       displayPrompt();
     }
+  }
+  
+  void _deleteLines(String args) {
+    if(args == null || args.isEmpty()) {
+      _fullBuff.removeRange((_curLine - 1), 1);
+      if(_curLine > _fullBuff.length) _curLine -= 1;
+    }
+    displayPrompt();
   }
   
   void _quitEdit() {
