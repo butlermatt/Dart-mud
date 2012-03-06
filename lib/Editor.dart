@@ -5,6 +5,38 @@ class EditorMode {
   const EditorMode(int this._mode);
 }
 
+class Range {
+  int _lower;
+  int _upper;
+  int _length;
+  
+  Range(String rng) {
+    List rangeArgs = rng.split(',');
+    if(rangeArgs.length == 1) {
+      int value = Math.parseInt(rangeArgs[0]);
+      _lower = value;
+      _upper = value;
+      _length = 1;
+    } else {
+      int value1 = Math.parseInt(rangeArgs[0]);
+      int value2 = Math.parseInt(rangeArgs[1]);
+      if(value1 >  value2) {
+        throw const BadNumberFormatException('Range should be in the format of <lowerValue>,<upperValue>');
+      }
+      _lower = value1;
+      _upper = value2;
+      _length = value2 - value1 + 1; // Ranges are inclusive so add an extra value;
+    }
+  }
+  
+  bool contains(int value) => (value >= _lower) && (value <= _upper);
+  
+  int get length() => _length;
+  
+  int get first() => _lower;
+  int get last() => _upper;
+}
+
 class Editor {
   EditorMode _currentMode;
   String _prompt;
@@ -93,8 +125,28 @@ class Editor {
   }
   
   void _printLines(String arg) {
-    if(arg === null || arg.isEmpty()) {
+    if(arg == null || arg.isEmpty()) {
       usr.write("${Colors.LT_WHITE('$_curLine :')} ${_fullBuff[_curLine - 1]}");
+    } else {
+      Range range;
+      try {
+        range = new Range(arg);
+      } catch(BadNumberFormatException e) {
+        String error = 'Error: Please use the range in the format of <lowerValue>,<upperValue>';
+        usr.writeLine(Colors.LT_RED(error));
+      }
+      if(range != null && range.first > _fullBuff.length) {
+        String error = 'Error: Please use the range in the format of <lowerValue>,<upperValue>';
+        usr.writeLine(Colors.LT_RED(error));
+      } else if(range != null) {
+        int i = (range.first - 1);
+        int end = (range.last <= _fullBuff.length ? range.last : _fullBuff.length);
+        for(i; i < end; i++) {
+          usr.write('${Colors.LT_WHITE('${i + 1} :')} ${_fullBuff[i]}');
+          // Don't need extra line return because each sentence has one already.
+        }
+        _curLine = end;
+      }
     }
     displayPrompt();
   }
@@ -129,17 +181,34 @@ d <range>   Deletes the current line, or optionally, the line(s) found in the
     if(args == null || args.isEmpty()) {
       _fullBuff.removeRange((_curLine - 1), 1);
       if(_curLine > _fullBuff.length) _curLine -= 1;
+    } else {
+      Range range;
+      try {
+        range = new Range(args);
+      } catch(BadNumberFormatException e) {
+        String error = 'Error: Please use the range in the format of <lowerValue>,<upperValue>';
+        usr.writeLine(Colors.LT_RED(error));
+      }
+      if(range != null && range.first > _fullBuff.length) {
+        String error = 'Error: Please use the range in the format of <lowerValue>,<upperValue>';
+        usr.writeLine(Colors.LT_RED(error));
+      } else if(range != null) {
+        int strt = (range.first - 1);
+        int end = (range.last <= _fullBuff.length ? range.last : _fullBuff.length);
+        int length = end - strt;
+        _fullBuff.removeRange(strt, length);
+        _curLine = (range.first <= _fullBuff.length ? range.first : _fullBuff.length);
+      }
     }
     displayPrompt();
   }
   
   void _quitEdit() {
-    StringBuffer resBuff = new StringBuffer();
     String res;
     if(_fullBuff.length === 0 || _fullBuff.isEmpty()) {
       res = '';
     } else {
-      res = resBuff.addAll(_fullBuff).toString().trim();
+      res = Strings.concatAll(_fullBuff);
     }
     usr.doneEdit(res);
   }

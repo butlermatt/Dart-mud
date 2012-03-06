@@ -15,7 +15,6 @@
 #source('Colors.dart');
 #source('Editor.dart');
 
-
 class Mudlib {
   static CommandManager cmdDaemon;
   static RoomManager roomDaemon;
