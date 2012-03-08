@@ -19,10 +19,21 @@ class Range {
       _length = 1;
     } else {
       int value1 = Math.parseInt(rangeArgs[0]);
-      int value2 = Math.parseInt(rangeArgs[1]);
+      int value2;
+      
+      if(rangeArgs[1].trim() == '\$') {
+        // Temporary 'upper limit' value. Unlikely someone will write a buffer
+        // With that many lines.
+        value2 = 9999; 
+        
+      } else {
+        value2 = Math.parseInt(rangeArgs[1]);
+      }
+      
       if(value1 >  value2) {
         throw const BadNumberFormatException('Range should be in the format of <lowerValue>,<upperValue>');
       }
+      
       _lower = value1;
       _upper = value2;
       _length = value2 - value1 + 1; // Ranges are inclusive so add an extra value;

@@ -20,7 +20,7 @@ class Login {
   Map<String, String> _mapData;
   
   Login(this._connect) {
-    _connect.lineHandler = _handleInput;
+    _connect.onLine = _handleInput;
     _loggedIn = 0;
     _usernameTries = 0;
     _passwordTries = 0;

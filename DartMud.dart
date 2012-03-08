@@ -1,5 +1,6 @@
 #library("dartmud:server");
 
+#import("dart:builtin"); // Temp fix for this Editor version
 #import("dart:io");
 #import('Connection.dart');
 #import("lib/Mudlib.dart");
@@ -18,8 +19,8 @@ class ServerManager {
       throw "Error: Unable to open Server Socket";
     }
     
-    _listenSocket.connectionHandler = this._handleConn;
-    _listenSocket.errorHandler = () {
+    _listenSocket.onConnection = this._handleConn;
+    _listenSocket.onError = () {
       print("Error occured with ServerSocket!");
     };
   }

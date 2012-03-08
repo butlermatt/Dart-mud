@@ -87,7 +87,7 @@ class Room extends ContainerImpl {
   
   List getOtherUsers(User curUser) => getUsers().filter((User usr) => usr != curUser);
   
-  bool hasExit(String exit) => _exits.containsKey(exit);
+  bool hasExit(String ext) => _exits.containsKey(ext);
   
   String getExit(String direction) => _exits[direction];
   

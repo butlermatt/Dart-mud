@@ -23,7 +23,7 @@ class User extends ContainerImpl {
     _longDescription = _userData['longDesc'];
     _prompt = _userData['prompt'];
     
-    _conn.lineHandler = _handleInput;
+    _conn.onLine = _handleInput;
   }
   
   void display(String str) {
@@ -36,7 +36,7 @@ class User extends ContainerImpl {
   void write(String str) { _conn.write(str); }
   
   void updateHandler(Function handler) {
-    _conn.lineHandler = handler;
+    _conn.onLine = handler;
   }
   
   void startEdit(Function callback) {
@@ -48,7 +48,7 @@ class User extends ContainerImpl {
   
   void doneEdit(String info) {
     _bufferData = info;
-    _conn.lineHandler = _handleInput;
+    _conn.onLine = _handleInput;
     _editCallback(info);
   }
   

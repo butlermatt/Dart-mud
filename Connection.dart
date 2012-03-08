@@ -1,5 +1,6 @@
 #library('dartmud:connection');
 
+#import("dart:builtin"); // Temp fix for this Editor version
 #import('dart:io');
 
 class Connection {
@@ -9,13 +10,13 @@ class Connection {
   Connection(this._sock) {
     _strInput = new StringInputStream(_sock.inputStream);
     
-    _sock.errorHandler = () { 
+    _sock.onError = () { 
       print("An error has occurred with Connection#$_sock");
       _sock.close();
     };
   }
   
-  set lineHandler(Function func) => _strInput.lineHandler = func;
+  set onLine(Function func) => _strInput.onLine = func;
   
   int write(String str) {
     List<int> strCodes = str.charCodes();
