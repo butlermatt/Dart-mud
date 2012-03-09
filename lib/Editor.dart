@@ -108,6 +108,9 @@ class Editor {
       case 'd':
         _deleteLines(arg);
         break;
+      case 'c':
+        _changeLines(arg);
+        break;
       }
     } else if(_currentMode == EditorMode.INPUT) {
       if(input == '.') {
@@ -178,11 +181,14 @@ i           Start editing on the line before the current line. Puts you into
             EDIT mode.
 a           Start editing on the line after the current line. Puts you into
             EDIT mode.
-q           Quit editor, returning anything currently in the buffer.
+c <range>   Change the current line, or optionally, the line(s) found in the
+            range specified. This will delete the line(s) and insert any new
+            text into that range.
 p <range>   Display the currently line, or optionally the line(s) found in the
             range specified.
 d <range>   Deletes the current line, or optionally, the line(s) found in the
-            range specified.''';
+            range specified.
+q           Quit editor, returning anything currently in the buffer.''';
       usr.writeLine('\n$helpInfo');
       displayPrompt();
     }
@@ -211,6 +217,41 @@ d <range>   Deletes the current line, or optionally, the line(s) found in the
         _curLine = (range.first <= _fullBuff.length ? range.first : _fullBuff.length);
       }
     }
+    displayPrompt();
+  }
+  
+  void _changeLines(String args) {
+    if(_fullBuff.isEmpty()) {
+      _curLine = 0;
+      _currentMode = EditorMode.INPUT;
+    } else if(args == null || args.isEmpty()) {
+      _currentMode = EditorMode.INPUT;
+      _curLine -= 1; 
+      _fullBuff.removeRange(_curLine, 1);
+    } else {
+      Range range;
+      
+      try {
+        range = new Range(args);
+      } catch(BadNumberFormatException e) {
+        String error = 'Error: Please use the range in the format of <lowerValue>,<upperValue>';
+        usr.writeLine(Colors.LT_RED(error));
+      }
+      
+      if(range != null && range.first > _fullBuff.length) {
+        String error = 'Error: Please use the range in the format of <lowerValue>,<upperValue>';
+        usr.writeLine(Colors.LT_RED(error));
+      } else if(range != null) {
+        _currentMode = EditorMode.INPUT;
+        int strt = (range.first - 1);
+        int end = (range.last <= _fullBuff.length ? range.last : _fullBuff.length);
+        int length = end - strt;
+        _fullBuff.removeRange(strt, length);
+        _curLine = (range.first <= _fullBuff.length ? range.first : _fullBuff.length);
+        _curLine -= 1;
+      }
+    }
+    
     displayPrompt();
   }
   
