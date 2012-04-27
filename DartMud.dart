@@ -1,6 +1,5 @@
 #library("dartmud:server");
 
-#import("dart:builtin"); // Temp fix for this Editor version
 #import("dart:io");
 #import('Connection.dart');
 #import("lib/Mudlib.dart");

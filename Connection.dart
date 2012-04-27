@@ -1,6 +1,5 @@
 #library('dartmud:connection');
 
-#import("dart:builtin"); // Temp fix for this Editor version
 #import('dart:io');
 
 class Connection {
