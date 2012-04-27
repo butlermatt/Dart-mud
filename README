@@ -1,0 +1,14 @@
+Dart-Mud is a very simple Mud based on Google's Dart language.
+This is an example of server side scripting.
+
+Please note that this is still in development and not secure in the least!
+There are currently encryption for passwords and I do not recommend opening
+up this mud to a public interface. Private testing only for the time being.
+
+Also note that this does not implement the full telnet protocol.
+
+Unfortunately this hasn't been kept up-to-date with more recent Dart language
+and library updates and it is subject to breakage. Hopefully in the near future
+I can find some more time to devote to continuing development and documentation
+of this project. It is currently a preview only.
+
