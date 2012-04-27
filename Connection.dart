@@ -9,8 +9,9 @@ class Connection {
   Connection(this._sock) {
     _strInput = new StringInputStream(_sock.inputStream);
     
-    _sock.onError = () { 
-      print("An error has occurred with Connection#$_sock");
+    _sock.onError = (Exception e) { 
+      print("An error has occurred with Connection#$_sock:");
+      print(e);
       _sock.close();
     };
   }

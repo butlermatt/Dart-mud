@@ -19,8 +19,9 @@ class ServerManager {
     }
     
     _listenSocket.onConnection = this._handleConn;
-    _listenSocket.onError = () {
-      print("Error occured with ServerSocket!");
+    _listenSocket.onError = (Exception e) {
+      print("Error occured with ServerSocket!:");
+      print(e);
     };
   }
   

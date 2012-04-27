@@ -18,7 +18,7 @@ To test out the mud:
 * In a console/terminal window, telnet to localhost port 5700
 (eg: telnet localhost 5700)
 
-Create a new account when loggin in (there are no default accounts provided).
+Create a new account when logging in (there are no default accounts provided).
 Once logged in, use the 'help' command to see what commands are available to
 you.
 
