@@ -12,3 +12,17 @@ and library updates and it is subject to breakage. Hopefully in the near future
 I can find some more time to devote to continuing development and documentation
 of this project. It is currently a preview only.
 
+To test out the mud:
+* In the Dart Editor, open the folder you stored the mud in. (eg: mud)
+* Open the DartMud.dart file and run it from the editor.
+* In a console/terminal window, telnet to localhost port 5700
+(eg: telnet localhost 5700)
+
+Create a new account when loggin in (there are no default accounts provided).
+Once logged in, use the 'help' command to see what commands are available to
+you.
+
+To properly terminate the mud, rather than using the IDE tools to stop the
+execution, use the 'shutdown' command while connected to the mud.
+
+(licencing and such files to be added soon.)
