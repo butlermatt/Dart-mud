@@ -4,11 +4,15 @@
 #import('Connection.dart');
 #import("lib/Mudlib.dart");
 
+/**
+ * ServerManager class opens server connection, creates a Connection
+ * and hands it off to the mudlib.
+ */
 class ServerManager {
   ServerSocket _listenSocket;
   Mudlib _mudlib;
   
-  // Create a socket to listen on
+  /** Create a new ServerSocket to listen on. Throws error if fails */
   ServerManager() {
     _mudlib = new Mudlib(this);
     _listenSocket = new ServerSocket("127.0.0.1", 5700, 0);
@@ -25,15 +29,18 @@ class ServerManager {
     };
   }
   
+  /**
+   * On connection to ServerSocket, creates a new Connection object
+   * and hands it off to the mudlib. Prints connection log to console.
+   */
   void _handleConn(Socket sock) {
     Connection conn = new Connection(sock);
     _mudlib.login(conn);
-    print("Connection from: $sock");
+    print("Connection from: ${sock.remoteHost}:${sock.remotePort}");
 
   }
     
-  // Shutdown the server.
-  // Call each Connection, send notice and close their connection.
+  /** Shutdown the server. */
   void shutdown() {
     print("Stopping server!");
     _listenSocket.close();
