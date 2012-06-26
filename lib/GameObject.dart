@@ -2,7 +2,13 @@ class GameObject {
   String _longDescription;
   String _shortDescription;
   
-  GameObject(String this._shortDescription, [String this._longDescription = "The devs were too lazy to provide a description"]);
+  GameObject(String this._shortDescription, [String longDescription]) {
+    if(longDescription == null) {
+      _longDescription = "The devs were too lazy to provide a description";
+    } else {
+      _longDescription = longDescription;
+    }
+  }
   
   /**
    * Returns the long description of an Object

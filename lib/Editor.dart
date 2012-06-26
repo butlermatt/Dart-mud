@@ -1,8 +1,6 @@
 class EditorMode {
-  final int _mode;
-  static final COMMAND = const EditorMode(0);
-  static final INPUT = const EditorMode(1);
-  const EditorMode(int this._mode);
+  static final int COMMAND = 0;
+  static final int INPUT  = 1;
 }
 
 class Range {
@@ -49,7 +47,7 @@ class Range {
 }
 
 class Editor {
-  EditorMode _currentMode;
+  var _currentMode;
   String _prompt;
   List<String> _fullBuff;
   List<String> _tmpBuff;
