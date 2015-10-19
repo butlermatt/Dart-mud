@@ -1,0 +1,9 @@
+name: dartmud
+version: 0.0.1
+description: Dart based mud using HTML front end and Web socket connection
+author: Matthew Butler <butler.matthew@gmail.com>
+dependencies:
+  crypto: "^0.9.1"
+  browser: "^0.10.0"
+environment:
+  sdk: ^1.12.1
